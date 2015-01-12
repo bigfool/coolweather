@@ -14,7 +14,7 @@ public class County {
 			this.id = id;
 		}
 		
-		public String geCountyName() {
+		public String getCountyName() {
 			return countyName;
 		}
 		
