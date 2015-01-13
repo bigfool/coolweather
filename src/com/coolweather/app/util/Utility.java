@@ -4,7 +4,7 @@ import com.coolweather.app.model.City;
 import com.coolweather.app.model.CoolWeatherDB;
 import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
-
+import android.text.TextUtils;
 
 public class Utility {
 	public synchronized static boolean handleProvincesResponse(CoolWeatherDB coolWeatherDB, 
@@ -57,7 +57,9 @@ public class Utility {
 					county.setCityId(cityId);
 					coolWeatherDB.saveCounty(county);
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 }
