@@ -15,8 +15,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.content.Intent;
 
-public class WeatherActivity extends Activity {
+
+public class WeatherActivity extends Activity implements OnClickListener {
+	
 	private LinearLayout weatherInfoLayout;
 	private TextView cityNameText;
 	private TextView publishText;
@@ -24,6 +29,9 @@ public class WeatherActivity extends Activity {
 	private TextView temp1Text;
 	private TextView temp2Text;
 	private TextView currentDateText;
+	
+	private Button switchCity;
+	private Button refreshWeather;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,35 @@ public class WeatherActivity extends Activity {
 			queryWeatherCode(countyCode);
 		} else {
 			showWeather();
+		}
+		
+		switchCity = (Button) findViewById(R.id.switch_city);
+		refreshWeather = (Button) findViewById(R.id.refresh_weather);
+		switchCity.setOnClickListener(this);
+		refreshWeather.setOnClickListener(this);
+	}
+	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.switch_city:
+			Intent intent = new Intent(this, ChooseAreaActivity.class);
+			intent.putExtra("from_weather_activity", true);
+			startActivity(intent);
+			finish();
+			break;
+			
+		case R.id.refresh_weather:
+			publishText.setText("同步中...");
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			String weatherCode = prefs.getString("weather_code", "");
+			if (!TextUtils.isEmpty(weatherCode)) {
+				queryWeatherInfo(weatherCode);
+			}
+			break;
+
+		default:
+			break;
 		}
 	}
 	
